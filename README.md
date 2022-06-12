@@ -4,11 +4,11 @@ YouTube Upload Bot is a program that will auto upload a video for you any number
 ## Installation
 1. First clone or download the repo
 2. (Windows Users) Open up either `PowerShell` or `Command Prompt`. This can be done by pressing the Windows Key and searching for one of those applications.
-3. Type `cd` (make sure you add the space after the cd or else I will call you a monkey)
+3. Type `cd` (Make sure you add the space after the cd)
 4. Drag and drop the folder that has the bot code onto the terminal
 5. Press the enter key
-6. Type `npm install`, press enter.
-7. Congrats, everyting is now installed and raeady to run!
+6. Type `npm install`, press enter
+7. Congrats, everyting is now installed and ready to run!
 
 ## Run
 1. Open index.js in a text editor
@@ -24,11 +24,11 @@ YouTube Upload Bot is a program that will auto upload a video for you any number
     const uploadLimit = 1
     ```
 3. (Windows Users) Open up either `PowerShell` or `Command Prompt`. This can be done by pressing the Windows Key and searching for one of those applications.
-4. Type `cd` (make sure you add the space after the cd or else I will call you a monkey)
+4. Type `cd` (Make sure you add the space after the cd)
 5. Drag and drop the folder that has the bot code onto the terminal
 6. Press the enter key
 7. Type `node index.js`
-8. And that is it!
+8. Now it's running!
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
