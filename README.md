@@ -20,6 +20,8 @@ YouTube Upload Bot is a program that will auto upload a video for you any number
     const videoFile = "REPLACE_ME"
     const youtubeTitle = "REPLACE_ME"
     const youtubeDesc = "REPLACE_ME"
+
+    const uploadLimit = 1
     ```
 3. (Windows Users) Open up either `PowerShell` or `Command Prompt`. This can be done by pressing the Windows Key and searching for one of those applications.
 4. Type `cd` (make sure you add the space after the cd or else I will call you a monkey)
