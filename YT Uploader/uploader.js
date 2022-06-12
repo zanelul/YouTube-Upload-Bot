@@ -18,13 +18,13 @@ async function OpenBrowser(Directory) {
     })
 }
 
-module.exports.CloseBrowser = async function() {
+module.exports.CloseBrowser = async function () {
     await MainPage.close()
     await Browser.close()
     await FSExtra.removeSync(RootDir)
 }
 
-module.exports.Login = async function(Email, Password) {
+module.exports.Login = async function (Email, Password) {
     RootDir = __dirname + "/browser"
     await FSExtra.removeSync(RootDir)
     Browser = await OpenBrowser(RootDir)
@@ -37,7 +37,7 @@ module.exports.Login = async function(Email, Password) {
     await MainPage.keyboard.press("Enter")
 }
 
-module.exports.UploadVideo = async function(Video, Title, Description = "") {
+module.exports.UploadVideo = async function (Video, Title, Description = "") {
     if (!Video || !(FS.existsSync(Video))) {
         throw "Video file does not exist or string is empty!"
     }
