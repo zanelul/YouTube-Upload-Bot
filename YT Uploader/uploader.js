@@ -37,7 +37,7 @@ module.exports.Login = async function(Email, Password) {
     await MainPage.keyboard.press("Enter")
 }
 
-module.exports.UploadVideo = async function(Video, Title) {
+module.exports.UploadVideo = async function(Video, Title, Description = "") {
     if (!Video || !(FS.existsSync(Video))) {
         throw "Video file does not exist or string is empty!"
     }
@@ -59,6 +59,14 @@ module.exports.UploadVideo = async function(Video, Title) {
     await MainPage.evaluate(() => document.execCommand("selectall", false, null))
     await Delay(1000)
     await MainPage.keyboard.type(Title.substr(0, 100), { delay: 10 })
+    await Delay(1000)
+    // Import description
+    const DescBox = await MainPage.$("ytcp-social-suggestions-textbox[id=\"description-textarea\"]")
+    await DescBox.click()
+    await Delay(500)
+    await MainPage.evaluate(() => document.execCommand("selectall", false, null))
+    await Delay(1000)
+    await MainPage.keyboard.type(Description.substr(0, 100), { delay: 10 })
     await Delay(1000)
     // Make it not for kids
     const AgeRestriction = await MainPage.$("tp-yt-paper-radio-button[name=\"VIDEO_MADE_FOR_KIDS_NOT_MFK\"]")
