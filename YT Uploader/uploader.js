@@ -7,6 +7,9 @@ const FSExtra = require("fs-extra");
 Puppeteer.use(StealthPlugin());
 Puppeteer.use(UserAgentPlugin({ makeWindows: true }));
 
+// Helpers
+const getElement = require("./helpers/getElement");
+
 const rootDir = `${__dirname}/browser`;
 
 let Browser, MainPage;
@@ -19,6 +22,14 @@ const OpenBrowser = async Directory => {
 			defaultViewport: null,
 			userDataDir: Directory,
 			ignoreDefaultArgs: ["--disable-extensions"],
+			args: [ 
+				'--no-sandbox',
+            	'--disable-gpu',
+            	'--disable-notifications',
+            	'--disable-web-security',
+            	'--ignore-certificate-errors',
+            	'--disable-features=IsolateOrigins,site-per-process'
+			] // Straight copied from stack overflow 😎
 		});
 	} catch (err) {
 		console.log(err);
@@ -39,17 +50,19 @@ const CloseBrowser = async () => {
 // For logging you into youtube studio
 const Login = async (Email, Password) => {
 	try {
+		FSExtra.removeSync(rootDir);
 		Browser = await OpenBrowser(rootDir);
 		MainPage = await Browser.newPage();
-		FSExtra.removeSync(rootDir);
 		await MainPage.goto("https://studio.youtube.com/");
-		await MainPage.type('input[type="email"]', Email);
-		await MainPage.keyboard.press("Enter");
+		await MainPage.type('input[type="email"]', Email, { delay: 100 });
 		await Delay(1000);
-		await MainPage.type('input[type="password"]', Password);
+		await MainPage.keyboard.press('Enter');
+		//await MainPage.click('button[data-idom-class="nCP5yc AjY5Oe DuMIQc LQeN7 qIypjc TrZEUc lw1w4b"]');
+		await Delay(2000);
+		await MainPage.type('input[type="password"]', Password, { delay: 100 });
 		await MainPage.keyboard.press("Enter");
 	} catch (err) {
-		console.log(err); // Handle properly later (lul)
+		return console.log(err); // Handle properly later (lul)
 	}
 };
 
@@ -63,22 +76,25 @@ const UploadVideo = async (Video, Title, Description = "") => {
 	}
 
 	try {
-		// Wait for upload button to be visible
-		await MainPage.waitForSelector('a[test-id="upload-icon-url"]');
-
 		// Get upload button and click it
-		const UploadBtn = await MainPage.$('a[test-id="upload-icon-url"]');
-		await UploadBtn.click();
+		const uploadBtn = await getElement(
+			'a[test-id="upload-icon-url"]',
+			MainPage,
+			true
+		);
+		await uploadBtn.click();
 
 		// Upload video
-		await MainPage.waitForSelector("#content > input[type=file]");
-		const SubmitFile = await MainPage.$("#content > input[type=file]");
-		await SubmitFile.uploadFile(Video);
+		const submitFileBtn = await getElement(
+			"#content > input[type=file]",
+			MainPage,
+			true
+		);
+		await submitFileBtn.uploadFile(Video);
 
 		// Import title
-		await MainPage.waitForSelector("#textbox");
-		const TitleBox = await MainPage.$("#textbox");
-		await TitleBox.click();
+		const titleBox = await getElement("#textbox", MainPage, true);
+		await titleBox.click();
 		await Delay(500);
 		await MainPage.evaluate(() =>
 			document.execCommand("selectall", false, null)
@@ -88,10 +104,12 @@ const UploadVideo = async (Video, Title, Description = "") => {
 		await Delay(1000);
 
 		// Import description
-		const DescBox = await MainPage.$(
-			'ytcp-social-suggestions-textbox[id="description-textarea"]'
+		const descriptionBox = await getElement(
+			'ytcp-social-suggestions-textbox[id="description-textarea"]',
+			MainPage
 		);
-		await DescBox.click();
+
+		await descriptionBox.click();
 		await Delay(500);
 		await MainPage.evaluate(() =>
 			document.execCommand("selectall", false, null)
@@ -101,40 +119,56 @@ const UploadVideo = async (Video, Title, Description = "") => {
 		await Delay(1000);
 
 		// Make it not for kids
-		const AgeRestriction = await MainPage.$(
-			'tp-yt-paper-radio-button[name="VIDEO_MADE_FOR_KIDS_NOT_MFK"]'
+
+		const ageRestrictionEl = await getElement(
+			'tp-yt-paper-radio-button[name="VIDEO_MADE_FOR_KIDS_NOT_MFK"]',
+			MainPage
 		);
-		await AgeRestriction.click();
+
+		await ageRestrictionEl.click();
 		await Delay(1000);
 
 		// Keep clicking next till the end
-		const NextBtn = await MainPage.$('ytcp-button[id="next-button"]');
-		let PrivacyText = await MainPage.$(
-			'tp-yt-paper-radio-button[name="PUBLIC"]'
+		const nextBtn = await getElement('ytcp-button[id="next-button"]', MainPage);
+
+		let PrivacyText = await getElement(
+			'tp-yt-paper-radio-button[name="PUBLIC"]',
+			MainPage
 		);
+
 		while (!PrivacyText) {
-			await NextBtn.click();
+			await nextBtn.click();
 			await Delay(1000);
-			PrivacyText = await MainPage.$(
-				'tp-yt-paper-radio-button[name="PUBLIC"]'
+			PrivacyText = await getElement(
+				'tp-yt-paper-radio-button[name="PUBLIC"]',
+				MainPage
 			);
 		}
 
 		// Make video public
-		const PrivacyBtn = await MainPage.$(
-			'tp-yt-paper-radio-button[name="PUBLIC"]'
+		const privacyBtn = await getElement(
+			'tp-yt-paper-radio-button[name="PUBLIC"]',
+			MainPage
 		);
-		await PrivacyBtn.click();
+
+		await privacyBtn.click();
 		await Delay(2000);
 
 		// Publish video
-		const PublishBtn = await MainPage.$('ytcp-button[id="done-button"]');
-		await PublishBtn.click();
+		const publishBtn = await getElement(
+			'ytcp-button[id="done-button"]',
+			MainPage
+		);
+
+		await publishBtn.click();
 
 		// Close popup
-		await MainPage.waitForSelector('ytcp-button[id="close-button"]');
-		const CloseBtn = await MainPage.$('ytcp-button[id="close-button"]');
-		await CloseBtn.click();
+		const closeBtn = await getElement(
+			'ytcp-button[id="close-button"]',
+			MainPage,
+			true
+		);
+		await closeBtn.click();
 	} catch (err) {
 		return console.log(err);
 	}
