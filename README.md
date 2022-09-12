@@ -16,7 +16,7 @@ YouTube Upload Bot is a program that will automatically upload a video for you a
 
 1. Go to `src/json/config.json` and open the file in a text editor
 2. Configure these items in the file
-3. 
+
    ```json
     "account": {
 		"email": "REPLACE_ME",
@@ -33,11 +33,11 @@ YouTube Upload Bot is a program that will automatically upload a video for you a
 	}
    ```
 
-4. (Windows Users) Open up either `PowerShell` or `Command Prompt`.
-5. Type `cd` (Make sure you add the space after the cd)
-6. Now copy the path of the bot. (Should contain `package-lock.json` & `package.json`)
-7. Press the enter key
-8. Type `node src/index.js`
+3. (Windows Users) Open up either `PowerShell` or `Command Prompt`.
+4. Type `cd` (Make sure you add the space after the cd)
+5. Now copy the path of the bot. (Should contain `package-lock.json` & `package.json`)
+6. Press the enter key
+7. Type `node src/index.js`
 
 ## Contributing
 
