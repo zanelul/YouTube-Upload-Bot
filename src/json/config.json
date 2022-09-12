@@ -1,0 +1,15 @@
+{
+	"account": {
+		"email": "REPLACE_ME",
+		"password": "REPLACE_ME"
+	},
+	"botSettings": {
+		"uploadLimit": 1,
+		"videoFile": "REPLACE_ME"
+	},
+	"videoSettings": {
+		"title": "REPLACE_ME",
+		"description": "REPLACE_ME",
+		"privacy": "PUBLIC"
+	}
+}

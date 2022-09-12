@@ -1,19 +1,21 @@
 {
-  "name": "yt-uploader-bot",
-  "version": "1.0.0",
-  "description": "YouTube Uploader Bot",
-  "main": "index.js",
-  "scripts": {
-    "test": "node index.js"
-  },
-  "author": "Zanelul, LeopoldPrime, Proton",
-  "license": "ISC",
-  "dependencies": {
-    "delay": "^5.0.0",
-    "fs": "^0.0.1-security",
-    "fs-extra": "^10.1.0",
-    "puppeteer-extra": "^3.2.3",
-    "puppeteer-extra-plugin-anonymize-ua": "^2.3.3",
-    "puppeteer-extra-plugin-stealth": "^2.9.0"
-  }
+	"name": "yt-uploader-bot",
+	"version": "1.0.0",
+	"description": "YouTube Uploader Bot",
+	"main": "./src/index.js",
+	"scripts": {
+		"start": "node ./src/index.js"
+	},
+	"author": "Zanelul, LeopoldPrime, Proton",
+	"license": "ISC",
+	"dependencies": {
+		"delay": "^5.0.0",
+		"fs-extra": "^10.1.0",
+		"puppeteer-extra": "^3.2.3",
+		"puppeteer-extra-plugin-anonymize-ua": "^2.3.3",
+		"puppeteer-extra-plugin-stealth": "^2.9.0"
+	},
+	"devDependencies": {
+		"eslint": "^8.23.1"
+	}
 }
